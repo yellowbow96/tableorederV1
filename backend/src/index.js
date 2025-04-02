@@ -3,16 +3,25 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const helmet = require('helmet');
+const rateLimit = require('express-rate-limit');
+const config = require('../deployment.config');
 
 const app = express();
 
-// Middleware
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || 'http://localhost:3000',
-  methods: ['GET', 'POST', 'PATCH'],
-  credentials: true
-}));
+// Security middleware
+app.use(helmet(config.security.helmet));
+app.use(rateLimit(config.security.rateLimit));
+
+// CORS and body parsing middleware
+app.use(cors(config.cors));
 app.use(bodyParser.json());
+
+// Request logging middleware
+app.use((req, res, next) => {
+  console.log(`${new Date().toISOString()} ${req.method} ${req.url}`);
+  next();
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
