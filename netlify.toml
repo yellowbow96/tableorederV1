@@ -1,5 +1,5 @@
 [build]
-  command = "yarn build"
+  command = "npm run build"
   publish = "out"
 
 [build.environment]
@@ -8,5 +8,5 @@
 # Ensure all routes are handled by Next.js
 [[redirects]]
   from = "/*"
-  to = "/index.html"
+  to = "/404.html"
   status = 200
