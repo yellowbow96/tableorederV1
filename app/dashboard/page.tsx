@@ -19,6 +19,8 @@ interface Order {
   totalAmount: number;
   status: 'pending' | 'preparing' | 'ready' | 'completed';
   createdAt: string;
+  customerName: string;
+  tableNumber: string;
 }
 
 export default function DashboardPage() {
@@ -97,17 +99,36 @@ export default function DashboardPage() {
             className="border rounded-lg p-4 bg-card shadow-sm"
           >
             <div className="flex justify-between items-start mb-4">
-              <div>
-                <p className="text-sm text-muted-foreground">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm font-medium">{order.customerName}</span>
+                  <Badge variant="outline">Table {order.tableNumber}</Badge>
+                </div>
+                <p className="text-xs text-muted-foreground">
                   Order ID: {order._id}
                 </p>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-xs text-muted-foreground">
                   Created: {new Date(order.createdAt).toLocaleString()}
                 </p>
               </div>
-              <Badge variant={getStatusColor(order.status)}>
-                {order.status.toUpperCase()}
-              </Badge>
+              <div className="flex flex-col items-end gap-2">
+                <Badge variant={getStatusColor(order.status)}>
+                  {order.status.toUpperCase()}
+                </Badge>
+                {order.status === 'completed' && (
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="text-xs"
+                    onClick={() => {
+                      toast.success('Order checked out successfully');
+                      // Additional checkout logic can be added here
+                    }}
+                  >
+                    Check Out
+                  </Button>
+                )}
+              </div>
             </div>
             <div className="space-y-2">
               {order.items.map((item, index) => (

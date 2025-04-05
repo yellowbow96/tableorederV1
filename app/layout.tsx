@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         {children}
-        <Toaster />
+        <Toaster swipeDirection="right" swipeThreshold={50} />
       </body>
     </html>
   );

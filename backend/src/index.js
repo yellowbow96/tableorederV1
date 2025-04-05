@@ -102,7 +102,7 @@ app.patch('/api/orders/:id/status', async (req, res) => {
 });
 
 // Start server
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const { port, host } = config.server;
+app.listen(port, host, () => {
+  console.log(`Server is running on ${host}:${port}`);
 });

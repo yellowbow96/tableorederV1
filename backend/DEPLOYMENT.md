@@ -41,12 +41,12 @@ The following security measures are already configured in `deployment.config.js`
 
 1. Install dependencies:
    ```bash
-   npm install
+   yarn install
    ```
 
 2. Start the production server:
    ```bash
-   npm start
+   yarn start
    ```
 
 ### 5. Health Checks

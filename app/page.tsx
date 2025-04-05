@@ -3,8 +3,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { TableEntryForm } from '@/components/table-entry-form';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { MenuSection } from '@/components/menu-section';
 import { OrderDialog } from '@/components/order-dialog';
@@ -21,6 +20,7 @@ interface OrderItem {
 
 export default function Home() {
   const [tableNumber, setTableNumber] = useState('');
+  const [customerName, setCustomerName] = useState('');
   const [isTableSet, setIsTableSet] = useState(false);
   const [orderItems, setOrderItems] = useState<Record<string, OrderItem>>({});
   
@@ -115,22 +115,11 @@ export default function Home() {
     setOrderItems({});
   };
 
-  const handleTableSubmit = () => {
-    const trimmedTableNumber = tableNumber.trim();
-    if (!trimmedTableNumber) {
-      toast.error("Please enter a table number");
-      return;
-    }
-    
-    const tableNum = parseInt(trimmedTableNumber);
-    if (isNaN(tableNum) || tableNum <= 0 || tableNum > 100) {
-      toast.error("Please enter a valid table number between 1 and 100");
-      return;
-    }
-    
-    setTableNumber(trimmedTableNumber); // Normalize the table number
+  const handleTableSubmit = (tableNum: string, name: string) => {
+    setTableNumber(tableNum);
+    setCustomerName(name);
     setIsTableSet(true);
-    toast.success(`Table ${trimmedTableNumber} selected`, {
+    toast.success(`Welcome ${name} at Table ${tableNum}`, {
       description: "You can now browse the menu and place orders."
     });
   };
@@ -140,32 +129,7 @@ export default function Home() {
   };
 
   if (!isTableSet) {
-    return (
-      <div className="container mx-auto flex items-center justify-center min-h-screen">
-        <Card className="w-full max-w-md">
-          <CardHeader>
-            <CardTitle>Welcome to Our Restaurant</CardTitle>
-            <CardDescription>Please enter your table number to continue</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="tableNumber">Table Number</Label>
-                <Input 
-                  id="tableNumber" 
-                  placeholder="Enter table number" 
-                  value={tableNumber}
-                  onChange={(e) => setTableNumber(e.target.value)}
-                />
-              </div>
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button onClick={handleTableSubmit} className="w-full" variant="default">Continue</Button>
-          </CardFooter>
-        </Card>
-      </div>
-    );
+    return <TableEntryForm onSubmit={handleTableSubmit} />;
   }
 
   return (

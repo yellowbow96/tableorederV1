@@ -18,6 +18,8 @@ interface Order {
   totalAmount: number;
   status: 'pending' | 'preparing' | 'ready' | 'completed';
   createdAt: string;
+  customerName: string;
+  tableNumber: string;
 }
 
 export type { MenuItem, OrderItem, Order };
